@@ -1,0 +1,64 @@
+﻿#cloud-config
+users:
+  - name: oley
+    shell: /bin/zsh
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh_import_id:
+      - gh: tolejarczuk
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - curl
+  - wget
+  - git
+  - zsh
+  - bat
+  - jq
+  - cowsay
+  - fortune-mod
+  - lolcat
+  - python3
+  - autojump
+  - python3-dev 
+  - python3-pip 
+  - python3-setuptools
+  - fzf
+  - command-not-found
+  - fd-find
+  - fontconfig
+  - htop
+  - ripgrep
+  - ruby
+  - ruby-dev
+  - thefuck
+  - tealdeer
+  - xz-utils
+  - make
+  - gcc
+  - unzip
+  - git
+  - curl
+  - xclip
+  - lsd
+
+write_files:
+  - path: /etc/ssh/sshd_config.d/disable_root_login.conf
+    content: |
+      PasswordAuthentication no
+      PermitRootLogin no
+    permissions: '0644'
+    owner: root:root
+
+runcmd:
+  - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/install.sh)"
+  - brew install bottom  # Install 'bottom' using Homebrew
+  - if [ ! -f /usr/local/share/fonts/JetBrainsMonoNerdFontMono-Regular.ttf ]; then
+        # Get latest Nerd Fonts tag
+        NF_LATEST_TAG=$(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | jq -r .tag_name)
+
+        # Download and extract JetBrainsMono
+        curl -L "https://github.com/ryanoasis/nerd-fonts/releases/download/${NF_LATEST_TAG}/JetBrainsMono.tar.xz" | tar -xJf - -C /usr/local/share/fonts
+      fi
