@@ -6,6 +6,9 @@ users:
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     ssh_import_id:
       - gh:tolejarczuk
+  - name: docker
+    groups: docker
+
 
 package_update: true
 package_upgrade: true
@@ -41,9 +44,12 @@ packages:
   - gcc
   - unzip
   - git
-  - curl
   - xclip
   - lsd
+  - apt-transport-https
+  - ca-certificates
+  - gnupg
+  - software-properties-common
 
 write_files:
   - path: /etc/ssh/sshd_config.d/disable_root_login.conf
@@ -53,7 +59,31 @@ write_files:
     permissions: '0644'
     owner: root:root
 
+    # Add Docker's GPG key
+  - path: /tmp/docker-gpg-key.sh
+    content: |
+      #!/bin/bash
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    permissions: '0755'
+
+  # Add Docker repository
+  - path: /tmp/docker-repo.sh
+    content: |
+      #!/bin/bash
+      echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+    permissions: '0755'
+
 runcmd:
   - NF_LATEST_TAG=$(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | jq -r .tag_name)
   - curl -L "https://github.com/ryanoasis/nerd-fonts/releases/download/${NF_LATEST_TAG}/JetBrainsMono.tar.xz" | tar -xJf - -C /usr/local/share/fonts
+  # Install Docker
+  - chmod +x /tmp/docker-gpg-key.sh
+  - /tmp/docker-gpg-key.sh
+  - chmod +x /tmp/docker-repo.sh
+  - /tmp/docker-repo.sh
+  - apt-get update
+  - apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
   - reboot
