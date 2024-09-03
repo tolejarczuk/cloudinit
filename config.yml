@@ -105,5 +105,9 @@ runcmd:
   - su - oley -c 'wget -O ~/.p10k.zsh https://raw.githubusercontent.com/tolejarczuk/cloudinit/master/.p10k.zsh'
   - su - oley -c 'wget -O ~/.zshrc https://raw.githubusercontent.com/tolejarczuk/cloudinit/master/.oh-my-zshrc'
   - echo "Configuration files downloaded."
+  - su - oley -c 'sudo snap install nvim --classic'
+  - su - oley -c 'git clone https://github.com/nvim-lua/kickstart.nvim.git ~/.config/nvim'
   - echo "Cloud-init configuration complete. Rebooting..."
+  - run: |
+      curl -X POST -H 'Content-Type: application/json' -d '{"chat_id": "123456789", "text": "Machine will be ready after reboot"}' https://api.telegram.org/botxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/sendMessage
   - reboot
