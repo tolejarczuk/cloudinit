@@ -108,6 +108,4 @@ runcmd:
   - su - oley -c 'sudo snap install nvim --classic'
   - su - oley -c 'git clone https://github.com/nvim-lua/kickstart.nvim.git ~/.config/nvim'
   - echo "Cloud-init configuration complete. Rebooting..."
-  - run: |
-      curl -X POST -H 'Content-Type: application/json' -d '{"chat_id": "123456789", "text": "Machine will be ready after reboot"}' https://api.telegram.org/botxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/sendMessage
   - reboot
