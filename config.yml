@@ -86,4 +86,14 @@ runcmd:
   - /tmp/docker-repo.sh
   - apt-get update
   - apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+  - sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  - su - oley -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
+  # Clone git repositories into Oh My Zsh custom folders (assuming default installation path)
+  - su - oley -c 'git clone --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k'
+  - su - oley -c 'git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions'
+  - su - oley -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting'
+  - su - oley -c 'git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions'
+  - su - oley -c 'git clone https://github.com/ChrisPenner/copy-pasta.git ~/.oh-my-zsh/custom/plugins/copy-pasta'
+  - su - oley -c 'wget -O ~/.p10k.zsh https://raw.githubusercontent.com/tolejarczuk/cloudinit/main/.p10k.zsh'
+  - su - oley -c 'wget -O ~/.zshrc https://raw.githubusercontent.com/tolejarczuk/cloudinit/main/.oh-my-zshrc'
   - reboot
