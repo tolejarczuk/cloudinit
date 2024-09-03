@@ -94,6 +94,6 @@ runcmd:
   - su - oley -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting'
   - su - oley -c 'git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions'
   - su - oley -c 'git clone https://github.com/ChrisPenner/copy-pasta.git ~/.oh-my-zsh/custom/plugins/copy-pasta'
-  - su - oley -c 'wget -O ~/.p10k.zsh https://raw.githubusercontent.com/tolejarczuk/cloudinit/main/.p10k.zsh'
-  - su - oley -c 'wget -O ~/.zshrc https://raw.githubusercontent.com/tolejarczuk/cloudinit/main/.oh-my-zshrc'
+  - su - oley -c 'wget -O ~/.p10k.zsh https://raw.githubusercontent.com/tolejarczuk/cloudinit/master/.p10k.zsh'
+  - su - oley -c 'wget -O ~/.zshrc https://raw.githubusercontent.com/tolejarczuk/cloudinit/master/.oh-my-zshrc'
   - reboot
