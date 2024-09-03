@@ -175,6 +175,7 @@ mkcd() {
 }
 
 export PATH="$PATH:/usr/games"
+export PATH="$PATH:~/.local/bin"
 HISTFILE=~/.histfile
 export HISHTORY_SERVER=https://hishtory.home.dev19.eu
 

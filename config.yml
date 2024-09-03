@@ -37,7 +37,6 @@ packages:
   - ripgrep
   - ruby
   - ruby-dev
-  - thefuck
   - tealdeer
   - xz-utils
   - make
@@ -77,23 +76,34 @@ write_files:
     permissions: '0755'
 
 runcmd:
+  - echo "Starting cloud-init configuration..."
   - NF_LATEST_TAG=$(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | jq -r .tag_name)
   - curl -L "https://github.com/ryanoasis/nerd-fonts/releases/download/${NF_LATEST_TAG}/JetBrainsMono.tar.xz" | tar -xJf - -C /usr/local/share/fonts
+  - echo "Nerd Fonts installed."
   # Install Docker
+  - echo "Installing Docker..."
   - chmod +x /tmp/docker-gpg-key.sh
   - /tmp/docker-gpg-key.sh
   - chmod +x /tmp/docker-repo.sh
   - /tmp/docker-repo.sh
   - apt-get update
   - apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
-  - sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  - echo "Docker installed."
+  - echo "Installing Oh My Zsh for the 'oley' user..."
   - su - oley -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
+  - echo "Oh My Zsh installed."
   # Clone git repositories into Oh My Zsh custom folders (assuming default installation path)
+  - echo "Cloning Oh My Zsh plugins and themes..."
   - su - oley -c 'git clone --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k'
   - su - oley -c 'git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions'
   - su - oley -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting'
   - su - oley -c 'git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions'
   - su - oley -c 'git clone https://github.com/ChrisPenner/copy-pasta.git ~/.oh-my-zsh/custom/plugins/copy-pasta'
+  - su - oley -c 'pip3 install --user git+https://github.com/nvbn/thefuck --break-system-packages'
+  - echo "Oh My Zsh plugins and themes cloned."
+  - echo "Downloading .p10k.zsh and .zshrc..."
   - su - oley -c 'wget -O ~/.p10k.zsh https://raw.githubusercontent.com/tolejarczuk/cloudinit/master/.p10k.zsh'
   - su - oley -c 'wget -O ~/.zshrc https://raw.githubusercontent.com/tolejarczuk/cloudinit/master/.oh-my-zshrc'
+  - echo "Configuration files downloaded."
+  - echo "Cloud-init configuration complete. Rebooting..."
   - reboot
